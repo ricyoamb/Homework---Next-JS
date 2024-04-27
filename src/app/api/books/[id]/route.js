@@ -51,13 +51,12 @@ export const PUT = async (req, { params }) => {
         title,
         author,
         publisher,
-        year,
-        pages,
+        year: +year,
+        pages: +pages,
       },
     })
-    res.json({ book })
 
-    return NextResponse.json({ message: 'Book edited succesfull' })
+    return NextResponse.json({ message: 'Book edited succesfull', book })
   } catch (err) {
     console.log(err)
     return NextResponse.json(

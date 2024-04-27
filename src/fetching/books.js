@@ -23,34 +23,39 @@ export const createBook = async (params) => {
   }
 }
 
-export const editBook = async (id, title, author, publisher, year, pages) => {
+export const editBook = async (id, params) => {
   try {
-    const response = await fetch(`${BASE_URL}/editbooks/${id}`, {
+    const response = await fetch(`${BASE_URL}/books/${id}`, {
       method: 'PUT',
-      body: title,
-      author,
-      publisher,
-      year,
-      pages,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(params),
     })
-    return response
-  } catch (err) {
-    throw new Error({ message: err.response.messsage })
+
+    const data = await response.json()
+
+    return data
+  } catch (error) {
+    throw new Error({
+      message: error.response.message || 'Internal Server Error',
+    })
   }
 }
 
 export const uploadImage = async (params) => {
+  try {
+    const response = await fetch(`${BASE_URL}/books/uploads`, {
+      method: 'POST',
+      body: params,
+    })
 
-  try {   
-      const response = await fetch(`${BASE_URL}/books/uploads`, {
-          method: "POST",
-          body: params
-      })
-      
-      const data = await response.json();
+    const data = await response.json()
 
-      return data
-  } catch(err) {
-      throw new Error({message: err.response.message || "Internal Server Error"})
+    return data
+  } catch (err) {
+    throw new Error({
+      message: err.response.message || 'Internal Server Error',
+    })
   }
 }
